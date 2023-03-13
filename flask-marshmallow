@@ -1,0 +1,36 @@
+marshmallow là một thư viện để chuyển đổi các kiểu dữ liệu phức tạp VD như các object, sang và từ 
+các kiểu dữ liệu python gốc
+
+lược đồ marshmallow có thể được sử dụng để: 
+- xác thực dữ liệu đầu vào 
+- giải tuần tự hóa cho các dữ liệu đầu vào cho các object
+- tuần tự hóa các object chuyển đổi thành dữ liệu python nguyên thủy, sau đó sẽ định dạng chuyển thành 
+các dạng tiêu chuẩn như json  sử dụng cho http api 
+
+tích hợp flask_sqlalchemy tùy chọn 
+
+- phải khởi tạo flask-sqlalchemy trước flask-marshmallow 
+
+class Author(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    author_id = db.Column(db.Integer, db.ForeignKey("author.id"))
+    author = db.relationship("Author", backref="books")
+    
+    
+- tạo lược đồ Schemas từ các mô hình sử dụng SQLAlchemySchema hoặc SQLALchemyAutoSchema
+
+- api 
+
+from flask import Flask
+
+app = Flask(__name__)
+ma = Marshmallow(app)
+
+object cung cấp quyền truy cập lớp Schema 
+
